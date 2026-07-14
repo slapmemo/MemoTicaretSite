@@ -59,6 +59,7 @@ Geliştirme ortamında frontend `http://localhost:3000/api` adresine istek atar
 | Alan | Endpoint(ler) |
 |------|---------------|
 | Auth | `POST /api/auth/register`, `POST /api/auth/login`, `GET /api/auth/me` |
+| Hesap | `PUT /api/auth/profile` (ad/e-posta), `PUT /api/auth/password` (şifre değiştir) |
 | Ürünler | `GET/POST /api/products`, `GET/PUT/DELETE /api/products/:id` |
 | Yorumlar | `GET/POST /api/products/:id/reviews` |
 | Kategoriler | `GET/POST /api/categories`, `PUT/DELETE /api/categories/:id` |

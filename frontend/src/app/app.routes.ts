@@ -23,6 +23,11 @@ export const routes: Routes = [
     loadComponent: () => import('./customer/pages/orders/orders').then((m) => m.Orders),
   },
   {
+    path: 'hesabim',
+    canActivate: [authGuard],
+    loadComponent: () => import('./customer/pages/account/account').then((m) => m.Account),
+  },
+  {
     path: 'login',
     loadComponent: () => import('./customer/pages/login/login').then((m) => m.Login),
   },

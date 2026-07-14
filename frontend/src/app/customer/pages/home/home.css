@@ -1,0 +1,119 @@
+.shop-header {
+  margin-bottom: 1.5rem;
+}
+.shop-header .page-title {
+  margin-bottom: 0.25rem;
+}
+
+.filters {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.25rem;
+}
+.filters input {
+  flex: 1 1 240px;
+}
+.filters select {
+  flex: 0 0 200px;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.product-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.product-thumb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 140px;
+  background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+}
+.thumb-initial {
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--primary);
+  opacity: 0.55;
+}
+
+.product-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+}
+.product-category {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.product-name {
+  font-weight: 600;
+  color: #0f172a;
+  font-size: 1rem;
+}
+.product-name:hover {
+  color: var(--primary);
+  text-decoration: none;
+}
+.product-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+.price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+.stock {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+.stock-out {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+@media (max-width: 560px) {
+  .filters {
+    flex-direction: column;
+  }
+  .filters select {
+    flex: 1;
+  }
+}

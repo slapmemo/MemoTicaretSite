@@ -80,12 +80,13 @@ export class Home {
       this.errorMessage.set('Sepete eklemek için giriş yapmalısınız');
       return;
     }
+    this.errorMessage.set(null);
     this.cartService.addItem(product.id, 1).subscribe({
       next: () => {
         this.addedMessage.set(`"${product.name}" sepete eklendi`);
         setTimeout(() => this.addedMessage.set(null), 2000);
       },
-      error: () => this.errorMessage.set('Sepete eklenemedi'),
+      error: (err) => this.errorMessage.set(err.error?.error || 'Sepete eklenemedi'),
     });
   }
 }

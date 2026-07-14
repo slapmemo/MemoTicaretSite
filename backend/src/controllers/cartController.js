@@ -41,10 +41,17 @@ async function addItem(req, res, next) {
       where: { cartId_productId: { cartId: cart.id, productId } },
     });
 
+    const desiredQuantity = (existing?.quantity ?? 0) + quantity;
+    if (desiredQuantity > product.stock) {
+      return res.status(400).json({
+        error: `Yeterli stok yok. "${product.name}" için en fazla ${product.stock} adet ekleyebilirsiniz.`,
+      });
+    }
+
     const item = existing
       ? await prisma.cartItem.update({
           where: { id: existing.id },
-          data: { quantity: existing.quantity + quantity },
+          data: { quantity: desiredQuantity },
         })
       : await prisma.cartItem.create({ data: { cartId: cart.id, productId, quantity } });
 
@@ -63,9 +70,18 @@ async function updateItem(req, res, next) {
     }
 
     const cart = await getOrCreateCart(req.user.id);
-    const item = await prisma.cartItem.findUnique({ where: { id: itemId } });
+    const item = await prisma.cartItem.findUnique({
+      where: { id: itemId },
+      include: { product: true },
+    });
     if (!item || item.cartId !== cart.id) {
       return res.status(404).json({ error: 'Sepet öğesi bulunamadı' });
+    }
+
+    if (parsed.data.quantity > item.product.stock) {
+      return res.status(400).json({
+        error: `Yeterli stok yok. "${item.product.name}" için en fazla ${item.product.stock} adet seçebilirsiniz.`,
+      });
     }
 
     const updated = await prisma.cartItem.update({

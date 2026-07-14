@@ -1,56 +1,89 @@
-<h1>Ürünler</h1>
+<div class="page">
+  <header class="shop-header">
+    <h1 class="page-title">Ürünler</h1>
+    <p class="muted">Beğendiğin ürünleri keşfet, sepete ekle.</p>
+  </header>
 
-<div class="filters">
-  <input
-    type="text"
-    placeholder="Ürün ara..."
-    [(ngModel)]="search"
-    (keyup.enter)="applyFilters()"
-  />
+  <div class="filters card">
+    <input
+      type="text"
+      placeholder="Ürün ara..."
+      [(ngModel)]="search"
+      (keyup.enter)="applyFilters()"
+    />
 
-  <select [(ngModel)]="selectedCategoryId" (change)="applyFilters()">
-    <option [ngValue]="null">Tüm kategoriler</option>
-    @for (category of categories(); track category.id) {
-      <option [ngValue]="category.id">{{ category.name }}</option>
-    }
-  </select>
+    <select [(ngModel)]="selectedCategoryId" (change)="applyFilters()">
+      <option [ngValue]="null">Tüm kategoriler</option>
+      @for (category of categories(); track category.id) {
+        <option [ngValue]="category.id">{{ category.name }}</option>
+      }
+    </select>
 
-  <button type="button" (click)="applyFilters()">Ara</button>
+    <button type="button" class="btn btn-primary" (click)="applyFilters()">Ara</button>
+  </div>
+
+  @if (addedMessage()) {
+    <p class="alert alert-success">{{ addedMessage() }}</p>
+  }
+  @if (errorMessage()) {
+    <p class="alert alert-error">{{ errorMessage() }}</p>
+  }
+
+  @if (loading()) {
+    <p class="muted">Yükleniyor...</p>
+  } @else if (products().length === 0) {
+    <div class="empty-state card">
+      <p class="muted">Ürün bulunamadı.</p>
+    </div>
+  } @else {
+    <div class="product-grid">
+      @for (product of products(); track product.id) {
+        <div class="product-card">
+          <a [routerLink]="['/urunler', product.id]" class="product-thumb">
+            <span class="thumb-initial">{{ product.name.charAt(0) }}</span>
+          </a>
+          <div class="product-body">
+            <span class="product-category">{{ product.category?.name }}</span>
+            <a [routerLink]="['/urunler', product.id]" class="product-name">{{ product.name }}</a>
+            <div class="product-meta">
+              <span class="price">{{ product.price }} TL</span>
+              @if (product.stock === 0) {
+                <span class="stock stock-out">Tükendi</span>
+              } @else {
+                <span class="stock">Stok: {{ product.stock }}</span>
+              }
+            </div>
+            <button
+              type="button"
+              class="btn btn-primary btn-block"
+              [disabled]="product.stock === 0"
+              (click)="addToCart(product)"
+            >
+              Sepete Ekle
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="pagination">
+      <button
+        type="button"
+        class="btn btn-ghost"
+        [disabled]="page() === 1"
+        (click)="goToPage(page() - 1)"
+      >
+        ‹ Önceki
+      </button>
+      <span class="muted">Sayfa {{ page() }} / {{ totalPages }}</span>
+      <button
+        type="button"
+        class="btn btn-ghost"
+        [disabled]="page() === totalPages"
+        (click)="goToPage(page() + 1)"
+      >
+        Sonraki ›
+      </button>
+    </div>
+  }
 </div>
-
-@if (addedMessage()) {
-  <p class="success">{{ addedMessage() }}</p>
-}
-@if (errorMessage()) {
-  <p class="error">{{ errorMessage() }}</p>
-}
-
-@if (loading()) {
-  <p>Yükleniyor...</p>
-} @else if (products().length === 0) {
-  <p>Ürün bulunamadı.</p>
-} @else {
-  <div class="product-grid">
-    @for (product of products(); track product.id) {
-      <div class="product-card">
-        <a [routerLink]="['/urunler', product.id]">
-          <h3>{{ product.name }}</h3>
-        </a>
-        <p>{{ product.category?.name }}</p>
-        <p class="price">{{ product.price }} TL</p>
-        <p class="stock">Stok: {{ product.stock }}</p>
-        <button type="button" [disabled]="product.stock === 0" (click)="addToCart(product)">
-          Sepete Ekle
-        </button>
-      </div>
-    }
-  </div>
-
-  <div class="pagination">
-    <button type="button" [disabled]="page() === 1" (click)="goToPage(page() - 1)">Önceki</button>
-    <span>Sayfa {{ page() }} / {{ totalPages }}</span>
-    <button type="button" [disabled]="page() === totalPages" (click)="goToPage(page() + 1)">
-      Sonraki
-    </button>
-  </div>
-}

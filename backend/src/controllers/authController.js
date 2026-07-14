@@ -1,7 +1,12 @@
 const bcrypt = require('bcrypt');
 const prisma = require('../config/db');
 const { signToken } = require('../utils/jwt');
-const { registerSchema, loginSchema } = require('../validators/authValidators');
+const {
+  registerSchema,
+  loginSchema,
+  updateProfileSchema,
+  changePasswordSchema,
+} = require('../validators/authValidators');
 
 async function register(req, res, next) {
   try {
@@ -71,4 +76,55 @@ async function me(req, res, next) {
   }
 }
 
-module.exports = { register, login, me };
+async function updateProfile(req, res, next) {
+  try {
+    const parsed = updateProfileSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.issues[0].message });
+    }
+    const { name, email } = parsed.data;
+
+    const existing = await prisma.user.findUnique({ where: { email } });
+    if (existing && existing.id !== req.user.id) {
+      return res.status(409).json({ error: 'Bu e-posta başka bir hesapta kullanılıyor' });
+    }
+
+    const user = await prisma.user.update({
+      where: { id: req.user.id },
+      data: { name, email },
+    });
+
+    res.json({ id: user.id, name: user.name, email: user.email, role: user.role });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function changePassword(req, res, next) {
+  try {
+    const parsed = changePasswordSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.issues[0].message });
+    }
+    const { currentPassword, newPassword } = parsed.data;
+
+    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
+    if (!user) {
+      return res.status(404).json({ error: 'Kullanıcı bulunamadı' });
+    }
+
+    const matches = await bcrypt.compare(currentPassword, user.passwordHash);
+    if (!matches) {
+      return res.status(400).json({ error: 'Mevcut şifre hatalı' });
+    }
+
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+    await prisma.user.update({ where: { id: user.id }, data: { passwordHash } });
+
+    res.json({ message: 'Şifre güncellendi' });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { register, login, me, updateProfile, changePassword };

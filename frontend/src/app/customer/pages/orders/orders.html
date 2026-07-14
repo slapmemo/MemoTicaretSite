@@ -1,25 +1,35 @@
-<h1>Siparişlerim</h1>
+<div class="page">
+  <h1 class="page-title">Siparişlerim</h1>
 
-@if (loading()) {
-  <p>Yükleniyor...</p>
-} @else if (errorMessage()) {
-  <p class="error">{{ errorMessage() }}</p>
-} @else if (orders().length === 0) {
-  <p>Henüz siparişiniz yok.</p>
-} @else {
-  @for (order of orders(); track order.id) {
-    <div class="order-card">
-      <div class="order-header">
-        <span>Sipariş #{{ order.id }}</span>
-        <span class="status">{{ order.status }}</span>
-        <span>{{ order.createdAt | date: 'dd.MM.yyyy HH:mm' }}</span>
-      </div>
-      <ul>
-        @for (item of order.items; track item.id) {
-          <li>{{ item.product?.name }} × {{ item.quantity }} — {{ item.unitPrice }} TL</li>
-        }
-      </ul>
-      <p class="order-total">Toplam: {{ order.total }} TL</p>
+  @if (loading()) {
+    <p class="muted">Yükleniyor...</p>
+  } @else if (errorMessage()) {
+    <p class="alert alert-error">{{ errorMessage() }}</p>
+  } @else if (orders().length === 0) {
+    <div class="empty-state card">
+      <p class="muted">Henüz siparişiniz yok.</p>
+      <a routerLink="/" class="btn btn-primary">Alışverişe Başla</a>
+    </div>
+  } @else {
+    <div class="order-list">
+      @for (order of orders(); track order.id) {
+        <div class="order-card card">
+          <div class="order-header">
+            <span class="order-id">Sipariş #{{ order.id }}</span>
+            <span class="status-badge">{{ order.status }}</span>
+            <span class="order-date muted">{{ order.createdAt | date: 'dd.MM.yyyy HH:mm' }}</span>
+          </div>
+          <ul class="order-items">
+            @for (item of order.items; track item.id) {
+              <li>
+                <span>{{ item.product?.name }} × {{ item.quantity }}</span>
+                <span class="muted">{{ item.unitPrice }} TL</span>
+              </li>
+            }
+          </ul>
+          <p class="order-total">Toplam: {{ order.total }} TL</p>
+        </div>
+      }
     </div>
   }
-}
+</div>

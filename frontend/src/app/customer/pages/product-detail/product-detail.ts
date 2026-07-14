@@ -75,9 +75,10 @@ export class ProductDetail {
       return;
     }
 
+    this.errorMessage.set(null);
     this.cartService.addItem(product.id, this.quantity).subscribe({
       next: () => this.addedMessage.set('Sepete eklendi'),
-      error: () => this.errorMessage.set('Sepete eklenemedi'),
+      error: (err) => this.errorMessage.set(err.error?.error || 'Sepete eklenemedi'),
     });
   }
 

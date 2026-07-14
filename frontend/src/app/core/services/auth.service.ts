@@ -31,6 +31,19 @@ export class AuthService {
       .pipe(tap((res) => this.setSession(res)));
   }
 
+  updateProfile(name: string, email: string): Observable<User> {
+    return this.http
+      .put<User>(`${this.apiUrl}/profile`, { name, email })
+      .pipe(tap((user) => this.setUser(user)));
+  }
+
+  changePassword(currentPassword: string, newPassword: string): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.apiUrl}/password`, {
+      currentPassword,
+      newPassword,
+    });
+  }
+
   logout(): void {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
@@ -45,6 +58,11 @@ export class AuthService {
     localStorage.setItem(TOKEN_KEY, res.token);
     localStorage.setItem(USER_KEY, JSON.stringify(res.user));
     this.userSignal.set(res.user);
+  }
+
+  private setUser(user: User): void {
+    localStorage.setItem(USER_KEY, JSON.stringify(user));
+    this.userSignal.set(user);
   }
 
   private readStoredUser(): User | null {

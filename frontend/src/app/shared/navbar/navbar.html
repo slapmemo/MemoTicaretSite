@@ -1,18 +1,26 @@
 <nav class="navbar">
-  <a routerLink="/" class="brand">MemoTicaret</a>
+  <div class="navbar-inner">
+    <a routerLink="/" class="brand">Memo<span>Ticaret</span></a>
 
-  <div class="links">
-    @if (auth.isLoggedIn()) {
-      <span>Merhaba, {{ auth.user()?.name }}</span>
-      <a routerLink="/sepet">Sepetim ({{ cart.itemCount() }})</a>
-      <a routerLink="/hesabim/siparislerim">Siparişlerim</a>
-      @if (auth.isAdmin()) {
-        <a routerLink="/admin">Admin Paneli</a>
+    <div class="links">
+      @if (auth.isLoggedIn()) {
+        <span class="greeting">Merhaba, {{ auth.user()?.name }}</span>
+        <a routerLink="/sepet" class="nav-link cart-link">
+          Sepetim
+          @if (cart.itemCount() > 0) {
+            <span class="badge">{{ cart.itemCount() }}</span>
+          }
+        </a>
+        <a routerLink="/hesabim/siparislerim" class="nav-link">Siparişlerim</a>
+        <a routerLink="/hesabim" class="nav-link">Hesabım</a>
+        @if (auth.isAdmin()) {
+          <a routerLink="/admin" class="nav-link">Admin</a>
+        }
+        <button type="button" class="btn btn-ghost" (click)="logout()">Çıkış</button>
+      } @else {
+        <a routerLink="/login" class="nav-link">Giriş Yap</a>
+        <a routerLink="/register" class="btn btn-primary">Kayıt Ol</a>
       }
-      <button type="button" (click)="logout()">Çıkış Yap</button>
-    } @else {
-      <a routerLink="/login">Giriş Yap</a>
-      <a routerLink="/register">Kayıt Ol</a>
-    }
+    </div>
   </div>
 </nav>

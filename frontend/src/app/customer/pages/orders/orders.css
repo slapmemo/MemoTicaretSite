@@ -1,0 +1,53 @@
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.order-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+.order-id {
+  font-weight: 700;
+  color: #0f172a;
+}
+.order-date {
+  margin-left: auto;
+  font-size: 0.85rem;
+}
+
+.order-items {
+  list-style: none;
+  margin: 0 0 0.75rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.order-items li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.925rem;
+}
+
+.order-total {
+  margin: 0;
+  text-align: right;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}

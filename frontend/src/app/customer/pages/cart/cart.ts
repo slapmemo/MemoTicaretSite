@@ -42,8 +42,9 @@ export class Cart {
 
   updateQuantity(itemId: number, quantity: number): void {
     if (quantity < 1) return;
+    this.errorMessage.set(null);
     this.cartService.updateItem(itemId, quantity).subscribe({
-      error: () => this.errorMessage.set('Adet güncellenemedi'),
+      error: (err) => this.errorMessage.set(err.error?.error || 'Adet güncellenemedi'),
     });
   }
 

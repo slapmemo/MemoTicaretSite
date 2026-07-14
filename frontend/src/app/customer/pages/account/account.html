@@ -1,0 +1,56 @@
+<div class="page">
+  <h1 class="page-title">Hesabım</h1>
+
+  <div class="account-grid">
+    <section class="card">
+      <h2 class="card-title">Profil Bilgileri</h2>
+      <form [formGroup]="profileForm" (ngSubmit)="saveProfile()" class="form">
+        <label class="field">
+          <span>Ad Soyad</span>
+          <input type="text" formControlName="name" />
+        </label>
+        <label class="field">
+          <span>E-posta</span>
+          <input type="email" formControlName="email" />
+        </label>
+
+        @if (profileMessage()) {
+          <p class="alert alert-success">{{ profileMessage() }}</p>
+        }
+        @if (profileError()) {
+          <p class="alert alert-error">{{ profileError() }}</p>
+        }
+
+        <button class="btn btn-primary" type="submit" [disabled]="profileForm.invalid || savingProfile()">
+          {{ savingProfile() ? 'Kaydediliyor...' : 'Kaydet' }}
+        </button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2 class="card-title">Şifre Değiştir</h2>
+      <form [formGroup]="passwordForm" (ngSubmit)="savePassword()" class="form">
+        <label class="field">
+          <span>Mevcut Şifre</span>
+          <input type="password" formControlName="currentPassword" />
+        </label>
+        <label class="field">
+          <span>Yeni Şifre</span>
+          <input type="password" formControlName="newPassword" />
+          <small class="hint">En az 6 karakter</small>
+        </label>
+
+        @if (passwordMessage()) {
+          <p class="alert alert-success">{{ passwordMessage() }}</p>
+        }
+        @if (passwordError()) {
+          <p class="alert alert-error">{{ passwordError() }}</p>
+        }
+
+        <button class="btn btn-primary" type="submit" [disabled]="passwordForm.invalid || savingPassword()">
+          {{ savingPassword() ? 'Kaydediliyor...' : 'Şifreyi Güncelle' }}
+        </button>
+      </form>
+    </section>
+  </div>
+</div>

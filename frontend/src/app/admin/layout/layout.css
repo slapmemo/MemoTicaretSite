@@ -1,0 +1,74 @@
+.admin-shell {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  background: #0f172a;
+  color: #e2e8f0;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+}
+.admin-sidebar h2 {
+  color: #fff;
+  font-size: 1.15rem;
+  margin-bottom: 1.5rem;
+  padding: 0 0.5rem;
+}
+.admin-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+}
+.admin-sidebar nav a {
+  color: #cbd5e1;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.925rem;
+  font-weight: 500;
+}
+.admin-sidebar nav a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  text-decoration: none;
+}
+.admin-sidebar nav a.active {
+  background: var(--primary);
+  color: #fff;
+}
+.admin-sidebar > button {
+  margin-top: 1rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #e2e8f0;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+.admin-sidebar > button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.admin-content {
+  padding: 2rem;
+  background: var(--bg);
+  overflow-x: auto;
+}
+
+@media (max-width: 720px) {
+  .admin-shell {
+    grid-template-columns: 1fr;
+  }
+  .admin-sidebar {
+    position: static;
+    height: auto;
+  }
+}

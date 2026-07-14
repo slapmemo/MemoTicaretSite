@@ -28,6 +28,19 @@ async function create(req, res, next) {
       return res.status(404).json({ error: 'Ürün bulunamadı' });
     }
 
+    // Yalnızca ürünü satın almış (iptal edilmemiş bir siparişte yer alan) kullanıcı yorum yapabilir.
+    const purchased = await prisma.orderItem.findFirst({
+      where: {
+        productId,
+        order: { userId: req.user.id, status: { not: 'cancelled' } },
+      },
+    });
+    if (!purchased) {
+      return res
+        .status(403)
+        .json({ error: 'Yalnızca satın aldığınız ürünlere yorum yapabilirsiniz' });
+    }
+
     const review = await prisma.review.create({
       data: {
         productId,
@@ -40,6 +53,9 @@ async function create(req, res, next) {
 
     res.status(201).json(review);
   } catch (err) {
+    if (err.code === 'P2002') {
+      return res.status(409).json({ error: 'Bu ürüne zaten yorum yaptınız' });
+    }
     next(err);
   }
 }
