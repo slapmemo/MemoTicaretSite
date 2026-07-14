@@ -27,6 +27,16 @@ MemoTicaretSite/
     └── src/app/ # core, shared, customer, admin
 ```
 
+## Hızlı Başlatma
+
+Kurulum bir kez yapıldıysa (bkz. aşağıdaki Kurulum), projeyi tek tıkla başlatmak için:
+
+- **macOS:** `baslat.command` dosyasına çift tıkla
+- **Windows:** `baslat.bat` dosyasına çift tıkla
+
+Betik backend ve frontend için iki ayrı terminal açar ve frontend hazır olunca
+tarayıcıda `http://localhost:4200` adresini açar. Durdurmak için terminallerde `Ctrl+C`.
+
 ## Kurulum
 
 ### Ön koşullar
