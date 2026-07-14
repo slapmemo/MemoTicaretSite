@@ -1,0 +1,25 @@
+<div class="auth-page">
+  <h1>Giriş Yap</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      E-posta
+      <input type="email" formControlName="email" />
+    </label>
+
+    <label>
+      Şifre
+      <input type="password" formControlName="password" />
+    </label>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    <button type="submit" [disabled]="form.invalid || loading()">
+      {{ loading() ? 'Giriş yapılıyor...' : 'Giriş Yap' }}
+    </button>
+  </form>
+
+  <p>Hesabın yok mu? <a routerLink="/register">Kayıt ol</a></p>
+</div>

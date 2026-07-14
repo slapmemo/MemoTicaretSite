@@ -1,2 +1,22 @@
 kurallar.md
+proje-detayli-plan.md
+proje-kurulum-ozeti (1).md
 .DS_Store
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Env
+.env
+.env.local
+
+# Build output
+dist/
+build/
+
+# Angular
+.angular/
+
+# Prisma
+backend/prisma/dev.db

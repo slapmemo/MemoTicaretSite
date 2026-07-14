@@ -1,0 +1,56 @@
+<h1>Kategori Yönetimi</h1>
+
+@if (errorMessage()) {
+  <p class="error">{{ errorMessage() }}</p>
+}
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="admin-form">
+  <h2>{{ editingId() ? 'Kategoriyi Düzenle' : 'Yeni Kategori' }}</h2>
+
+  <label>
+    Ad
+    <input type="text" formControlName="name" />
+  </label>
+
+  <label>
+    Slug
+    <input type="text" formControlName="slug" placeholder="orn-elektronik" />
+  </label>
+
+  <div class="form-actions">
+    <button type="submit" [disabled]="form.invalid">
+      {{ editingId() ? 'Güncelle' : 'Ekle' }}
+    </button>
+    @if (editingId()) {
+      <button type="button" (click)="cancelEdit()">Vazgeç</button>
+    }
+  </div>
+</form>
+
+<h2>Kategoriler</h2>
+
+@if (loading()) {
+  <p>Yükleniyor...</p>
+} @else {
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Ad</th>
+        <th>Slug</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (category of categories(); track category.id) {
+        <tr>
+          <td>{{ category.name }}</td>
+          <td>{{ category.slug }}</td>
+          <td>
+            <button type="button" (click)="startEdit(category)">Düzenle</button>
+            <button type="button" (click)="remove(category)">Sil</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

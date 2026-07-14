@@ -1,0 +1,74 @@
+@if (loading()) {
+  <p>Yükleniyor...</p>
+} @else if (product(); as product) {
+  <div class="product-detail">
+    <h1>{{ product.name }}</h1>
+    <p>{{ product.category?.name }}</p>
+    <p>{{ product.description }}</p>
+    <p class="price">{{ product.price }} TL</p>
+    <p class="stock">Stok: {{ product.stock }}</p>
+
+    @if (addedMessage()) {
+      <p class="success">{{ addedMessage() }}</p>
+    }
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    <div class="add-to-cart">
+      <input type="number" [(ngModel)]="quantity" min="1" [max]="product.stock" />
+      <button type="button" [disabled]="product.stock === 0" (click)="addToCart()">
+        Sepete Ekle
+      </button>
+    </div>
+  </div>
+
+  <section class="reviews">
+    <h2>Yorumlar</h2>
+
+    @if (reviewsLoading()) {
+      <p>Yükleniyor...</p>
+    } @else if (reviews().length === 0) {
+      <p>Henüz yorum yok.</p>
+    } @else {
+      @for (review of reviews(); track review.id) {
+        <div class="review-card">
+          <strong>{{ review.user?.name }}</strong>
+          <span class="rating">{{ review.rating }} / 5</span>
+          @if (review.comment) {
+            <p>{{ review.comment }}</p>
+          }
+        </div>
+      }
+    }
+
+    @if (reviewError()) {
+      <p class="error">{{ reviewError() }}</p>
+    }
+
+    @if (auth.isLoggedIn()) {
+      <form (ngSubmit)="submitReview()" class="review-form">
+        <h3>Yorum Yap</h3>
+        <label>
+          Puan
+          <select [(ngModel)]="reviewRating" name="rating">
+            @for (n of [5, 4, 3, 2, 1]; track n) {
+              <option [ngValue]="n">{{ n }}</option>
+            }
+          </select>
+        </label>
+        <label>
+          Yorum
+          <textarea [(ngModel)]="reviewComment" name="comment"></textarea>
+        </label>
+        <button type="submit" [disabled]="submittingReview()">
+          {{ submittingReview() ? 'Gönderiliyor...' : 'Gönder' }}
+        </button>
+      </form>
+    } @else {
+      <p>Yorum yapmak için <a routerLink="/login">giriş yapın</a>.</p>
+    }
+  </section>
+} @else {
+  <p>{{ errorMessage() }}</p>
+}

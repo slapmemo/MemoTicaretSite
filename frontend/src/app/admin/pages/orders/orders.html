@@ -1,0 +1,43 @@
+<h1>Sipariş Yönetimi</h1>
+
+@if (errorMessage()) {
+  <p class="error">{{ errorMessage() }}</p>
+}
+
+@if (loading()) {
+  <p>Yükleniyor...</p>
+} @else if (orders().length === 0) {
+  <p>Henüz sipariş yok.</p>
+} @else {
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Müşteri</th>
+        <th>Tarih</th>
+        <th>Toplam</th>
+        <th>Durum</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (order of orders(); track order.id) {
+        <tr>
+          <td>{{ order.id }}</td>
+          <td>{{ order.user?.name }} ({{ order.user?.email }})</td>
+          <td>{{ order.createdAt | date: 'dd.MM.yyyy HH:mm' }}</td>
+          <td>{{ order.total }} TL</td>
+          <td>
+            <select
+              [ngModel]="order.status"
+              (ngModelChange)="changeStatus(order, $event)"
+            >
+              @for (status of statuses; track status) {
+                <option [value]="status">{{ status }}</option>
+              }
+            </select>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

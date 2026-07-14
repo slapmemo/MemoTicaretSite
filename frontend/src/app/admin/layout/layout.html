@@ -1,0 +1,19 @@
+<div class="admin-shell">
+  <aside class="admin-sidebar">
+    <h2>Admin Paneli</h2>
+    <nav>
+      <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        Dashboard
+      </a>
+      <a routerLink="/admin/urunler" routerLinkActive="active">Ürünler</a>
+      <a routerLink="/admin/kategoriler" routerLinkActive="active">Kategoriler</a>
+      <a routerLink="/admin/siparisler" routerLinkActive="active">Siparişler</a>
+      <a routerLink="/admin/kullanicilar" routerLinkActive="active">Kullanıcılar</a>
+    </nav>
+    <button type="button" (click)="logout()">Çıkış Yap</button>
+  </aside>
+
+  <main class="admin-content">
+    <router-outlet />
+  </main>
+</div>

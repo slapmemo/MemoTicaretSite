@@ -1,0 +1,56 @@
+<h1>Ürünler</h1>
+
+<div class="filters">
+  <input
+    type="text"
+    placeholder="Ürün ara..."
+    [(ngModel)]="search"
+    (keyup.enter)="applyFilters()"
+  />
+
+  <select [(ngModel)]="selectedCategoryId" (change)="applyFilters()">
+    <option [ngValue]="null">Tüm kategoriler</option>
+    @for (category of categories(); track category.id) {
+      <option [ngValue]="category.id">{{ category.name }}</option>
+    }
+  </select>
+
+  <button type="button" (click)="applyFilters()">Ara</button>
+</div>
+
+@if (addedMessage()) {
+  <p class="success">{{ addedMessage() }}</p>
+}
+@if (errorMessage()) {
+  <p class="error">{{ errorMessage() }}</p>
+}
+
+@if (loading()) {
+  <p>Yükleniyor...</p>
+} @else if (products().length === 0) {
+  <p>Ürün bulunamadı.</p>
+} @else {
+  <div class="product-grid">
+    @for (product of products(); track product.id) {
+      <div class="product-card">
+        <a [routerLink]="['/urunler', product.id]">
+          <h3>{{ product.name }}</h3>
+        </a>
+        <p>{{ product.category?.name }}</p>
+        <p class="price">{{ product.price }} TL</p>
+        <p class="stock">Stok: {{ product.stock }}</p>
+        <button type="button" [disabled]="product.stock === 0" (click)="addToCart(product)">
+          Sepete Ekle
+        </button>
+      </div>
+    }
+  </div>
+
+  <div class="pagination">
+    <button type="button" [disabled]="page() === 1" (click)="goToPage(page() - 1)">Önceki</button>
+    <span>Sayfa {{ page() }} / {{ totalPages }}</span>
+    <button type="button" [disabled]="page() === totalPages" (click)="goToPage(page() + 1)">
+      Sonraki
+    </button>
+  </div>
+}

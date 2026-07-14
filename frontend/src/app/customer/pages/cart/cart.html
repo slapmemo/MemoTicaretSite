@@ -1,0 +1,54 @@
+<h1>Sepetim</h1>
+
+@if (completedOrder(); as order) {
+  <div class="order-confirmation">
+    <h2>Siparişiniz alındı</h2>
+    <p>Sipariş No: #{{ order.id }}</p>
+    <p>Toplam: {{ order.total }} TL</p>
+    <a routerLink="/hesabim/siparislerim">Siparişlerim'e git</a>
+  </div>
+} @else if (loading()) {
+  <p>Yükleniyor...</p>
+} @else if (!cart() || cart()!.items.length === 0) {
+  <p>Sepetiniz boş.</p>
+} @else {
+  @if (errorMessage()) {
+    <p class="error">{{ errorMessage() }}</p>
+  }
+
+  <table class="cart-table">
+    <thead>
+      <tr>
+        <th>Ürün</th>
+        <th>Fiyat</th>
+        <th>Adet</th>
+        <th>Ara Toplam</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of cart()!.items; track item.id) {
+        <tr>
+          <td>{{ item.product?.name }}</td>
+          <td>{{ item.product?.price }} TL</td>
+          <td>
+            <input
+              type="number"
+              min="1"
+              [value]="item.quantity"
+              (change)="updateQuantity(item.id, +$any($event.target).value)"
+            />
+          </td>
+          <td>{{ lineTotal(item) | number: '1.2-2' }} TL</td>
+          <td><button type="button" (click)="removeItem(item.id)">Çıkar</button></td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+  <p class="cart-total">Toplam: {{ total() | number: '1.2-2' }} TL</p>
+
+  <button type="button" [disabled]="placingOrder()" (click)="placeOrder()">
+    {{ placingOrder() ? 'Sipariş oluşturuluyor...' : 'Siparişi Onayla' }}
+  </button>
+}

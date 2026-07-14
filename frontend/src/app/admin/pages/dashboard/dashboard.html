@@ -1,0 +1,26 @@
+<h1>Admin Dashboard</h1>
+
+@if (loading()) {
+  <p>Yükleniyor...</p>
+} @else if (errorMessage()) {
+  <p class="error">{{ errorMessage() }}</p>
+} @else if (stats(); as stats) {
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="stat-value">{{ stats.totalUsers }}</span>
+      <span class="stat-label">Müşteri</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ stats.totalProducts }}</span>
+      <span class="stat-label">Ürün</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ stats.totalOrders }}</span>
+      <span class="stat-label">Sipariş</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">{{ stats.totalRevenue | number: '1.2-2' }} TL</span>
+      <span class="stat-label">Ciro</span>
+    </div>
+  </div>
+}

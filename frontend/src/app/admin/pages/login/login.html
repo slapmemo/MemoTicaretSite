@@ -1,0 +1,23 @@
+<div class="auth-page admin-login">
+  <h1>Admin Girişi</h1>
+
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <label>
+      E-posta
+      <input type="email" formControlName="email" />
+    </label>
+
+    <label>
+      Şifre
+      <input type="password" formControlName="password" />
+    </label>
+
+    @if (errorMessage()) {
+      <p class="error">{{ errorMessage() }}</p>
+    }
+
+    <button type="submit" [disabled]="form.invalid || loading()">
+      {{ loading() ? 'Giriş yapılıyor...' : 'Giriş Yap' }}
+    </button>
+  </form>
+</div>

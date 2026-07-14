@@ -1,0 +1,18 @@
+<nav class="navbar">
+  <a routerLink="/" class="brand">MemoTicaret</a>
+
+  <div class="links">
+    @if (auth.isLoggedIn()) {
+      <span>Merhaba, {{ auth.user()?.name }}</span>
+      <a routerLink="/sepet">Sepetim ({{ cart.itemCount() }})</a>
+      <a routerLink="/hesabim/siparislerim">Siparişlerim</a>
+      @if (auth.isAdmin()) {
+        <a routerLink="/admin">Admin Paneli</a>
+      }
+      <button type="button" (click)="logout()">Çıkış Yap</button>
+    } @else {
+      <a routerLink="/login">Giriş Yap</a>
+      <a routerLink="/register">Kayıt Ol</a>
+    }
+  </div>
+</nav>

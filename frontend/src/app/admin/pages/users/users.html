@@ -1,0 +1,28 @@
+<h1>Kullanıcılar</h1>
+
+@if (loading()) {
+  <p>Yükleniyor...</p>
+} @else if (errorMessage()) {
+  <p class="error">{{ errorMessage() }}</p>
+} @else {
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Ad</th>
+        <th>E-posta</th>
+        <th>Rol</th>
+        <th>Kayıt Tarihi</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (user of users(); track user.id) {
+        <tr>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>{{ user.createdAt | date: 'dd.MM.yyyy' }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}
